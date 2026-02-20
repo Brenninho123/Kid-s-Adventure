@@ -16,26 +16,27 @@ jobs:
       # 1️⃣ Checkout repository
       - uses: actions/checkout@v3
 
-      # 2️⃣ Download Haxe portable + Neko portable
-      - name: Download Haxe and Neko
+      # 2️⃣ Install Haxe (installer silencioso)
+      - name: Install Haxe
         run: |
-          # Haxe portable
-          Invoke-WebRequest https://haxe.org/website-content/downloads/4.3.2/downloads/haxe-4.3.2-windows.zip -OutFile haxe.zip
-          Expand-Archive haxe.zip -DestinationPath haxe
-          setx PATH "$Env:PATH;${PWD}\haxe\haxe-4.3.2"
-          # Neko portable
-          Invoke-WebRequest https://nekovm.org/_media/neko-2.3.0-windows.zip -OutFile neko.zip
-          Expand-Archive neko.zip -DestinationPath neko
-          setx PATH "$Env:PATH;${PWD}\neko\neko-2.3.0"
+          Invoke-WebRequest -Uri https://haxe.org/website-content/downloads/4.3.2/haxe-4.3.2-windows.exe -OutFile haxe-installer.exe
+          Start-Process -FilePath haxe-installer.exe -ArgumentList '/S' -Wait
 
-      # 3️⃣ Check versions
-      - name: Check Haxe and Neko
+      # 3️⃣ Install Neko (installer silencioso)
+      - name: Install Neko
         run: |
+          Invoke-WebRequest -Uri https://nekovm.org/_downloads/neko-2.3.0-windows.exe -OutFile neko-installer.exe
+          Start-Process -FilePath neko-installer.exe -ArgumentList '/S' -Wait
+
+      # 4️⃣ Add Haxe and Neko to PATH
+      - name: Set PATH
+        run: |
+          $env:PATH += ";C:\HaxeToolkit\haxe;C:\HaxeToolkit\neko"
           haxe -version
           neko -version
 
-      # 4️⃣ Install haxelib dependencies
-      - name: Install Haxelib dependencies
+      # 5️⃣ Install haxelib dependencies
+      - name: Install haxelib dependencies
         run: |
           haxelib install lime
           haxelib install openfl
@@ -43,11 +44,11 @@ jobs:
           haxelib install flixel-addons
           haxelib run flixel setup
 
-      # 5️⃣ Build Windows
+      # 6️⃣ Build Windows
       - name: Build Windows
         run: lime build windows -release
 
-      # 6️⃣ Upload artifact
+      # 7️⃣ Upload artifact
       - uses: actions/upload-artifact@v4
         with:
           name: KidAdventure-Windows
