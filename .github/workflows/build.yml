@@ -17,28 +17,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2️⃣ Instalar Haxe
-      - name: Setup Haxe
-        uses: HaxeFoundation/setup-haxe@v1
-        with:
-          haxe-version: '4.3.2'
-
-      # 3️⃣ Instalar Lime e OpenFL
-      - name: Install Haxelib dependencies
+      # 2️⃣ Instalar Haxe manualmente
+      - name: Install Haxe
         run: |
+          choco install haxe -y
           haxelib install lime
           haxelib install openfl
           haxelib install flixel
           haxelib install flixel-addons
           haxelib run flixel setup
 
-      # 4️⃣ Build do Windows
+      # 3️⃣ Build do Windows
       - name: Build Windows
         run: lime build windows -release
 
-      # 5️⃣ Armazenar o build como artifact
+      # 4️⃣ Upload Windows build (novo padrão)
       - name: Upload Windows build
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: KidAdventure-Windows
           path: Export/KidsAdventure/bin/windows/release/
