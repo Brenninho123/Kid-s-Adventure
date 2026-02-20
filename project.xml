@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+    <!-- Game metadata -->
+    <meta title="Kid's Adventure" package="kids.adventure" version="1.0.0" company="YourName" />
+
+    <!-- Source code folder -->
+    <source path="Source" />
+
+    <!-- Libraries -->
+    <haxelib name="flixel" />
+    <haxelib name="flixel-addons" />
+    <haxelib name="openfl" />
+    <haxelib name="lime" />
+
+    <!-- Main entry point -->
+    <app main="Main" path="Export/KidsAdventure" file="KidAdventure" />
+
+    <!-- Window settings -->
+    <window width="800" height="600" fps="60" hardware="true" vsync="true" />
+
+    <!-- Windows target only -->
+    <target value="windows" />
+</project>
