@@ -13,20 +13,28 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      # 1️⃣ Checkout do repositório
+      # 1️⃣ Checkout repository
       - uses: actions/checkout@v3
 
-      # 2️⃣ Baixar e instalar Haxe + Neko
-      - name: Install Haxe and Neko
+      # 2️⃣ Download Haxe portable + Neko portable
+      - name: Download Haxe and Neko
         run: |
-          choco install haxe -y
-          choco install neko -y
-          echo "Haxe version:"
+          # Haxe portable
+          Invoke-WebRequest https://haxe.org/website-content/downloads/4.3.2/downloads/haxe-4.3.2-windows.zip -OutFile haxe.zip
+          Expand-Archive haxe.zip -DestinationPath haxe
+          setx PATH "$Env:PATH;${PWD}\haxe\haxe-4.3.2"
+          # Neko portable
+          Invoke-WebRequest https://nekovm.org/_media/neko-2.3.0-windows.zip -OutFile neko.zip
+          Expand-Archive neko.zip -DestinationPath neko
+          setx PATH "$Env:PATH;${PWD}\neko\neko-2.3.0"
+
+      # 3️⃣ Check versions
+      - name: Check Haxe and Neko
+        run: |
           haxe -version
-          echo "Neko version:"
           neko -version
 
-      # 3️⃣ Instalar Lime, OpenFL, Flixel
+      # 4️⃣ Install haxelib dependencies
       - name: Install Haxelib dependencies
         run: |
           haxelib install lime
@@ -35,11 +43,11 @@ jobs:
           haxelib install flixel-addons
           haxelib run flixel setup
 
-      # 4️⃣ Build Windows
+      # 5️⃣ Build Windows
       - name: Build Windows
         run: lime build windows -release
 
-      # 5️⃣ Upload Windows build
+      # 6️⃣ Upload artifact
       - uses: actions/upload-artifact@v4
         with:
           name: KidAdventure-Windows
