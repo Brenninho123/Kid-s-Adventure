@@ -1,0 +1,44 @@
+name: Build Kid's Adventure (Windows)
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      # 1️⃣ Checkout do repositório
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2️⃣ Instalar Haxe
+      - name: Setup Haxe
+        uses: HaxeFoundation/setup-haxe@v1
+        with:
+          haxe-version: '4.3.2'
+
+      # 3️⃣ Instalar Lime e OpenFL
+      - name: Install Haxelib dependencies
+        run: |
+          haxelib install lime
+          haxelib install openfl
+          haxelib install flixel
+          haxelib install flixel-addons
+          haxelib run flixel setup
+
+      # 4️⃣ Build do Windows
+      - name: Build Windows
+        run: lime build windows -release
+
+      # 5️⃣ Armazenar o build como artifact
+      - name: Upload Windows build
+        uses: actions/upload-artifact@v3
+        with:
+          name: KidAdventure-Windows
+          path: Export/KidsAdventure/bin/windows/release/
