@@ -4,7 +4,7 @@
     <meta title="Kid's Adventure" package="kids.adventure" version="1.0.0" company="YourName" />
 
     <!-- Source code folder -->
-    <source path="Source" />
+    <source path="source" />
 
     <!-- Libraries -->
     <haxelib name="flixel" />
