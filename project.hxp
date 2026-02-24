@@ -1,0 +1,41 @@
+import lime.project.Project;
+
+class ProjectHXP {
+    static function main() {
+        var project = new Project();
+
+        // Metadata
+        project.meta.title = "Kid's Adventure";
+        project.meta.packageName = "kids.adventure";
+        project.meta.version = "1.0.0";
+        project.meta.company = "YourName";
+
+        // Source folder
+        project.sources = ["source"];
+
+        // Main class
+        project.app.main = "Main";
+        project.app.file = "KidAdventure";
+        project.app.path = "Export/KidsAdventure";
+
+        // Window config
+        project.window.width = 800;
+        project.window.height = 600;
+        project.window.fps = 60;
+        project.window.hardware = true;
+        project.window.vsync = true;
+
+        // Libraries
+        project.dependencies = [
+            "lime",
+            "openfl",
+            "flixel",
+            "flixel-addons"
+        ];
+
+        // Windows only
+        project.target = "windows";
+
+        project.build();
+    }
+}
