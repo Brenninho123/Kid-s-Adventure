@@ -2,40 +2,65 @@ import lime.project.Project;
 
 class ProjectHXP {
     static function main() {
+
         var project = new Project();
 
+        // =====================
         // Metadata
+        // =====================
         project.meta.title = "Kid's Adventure";
         project.meta.packageName = "kids.adventure";
         project.meta.version = "1.0.0";
         project.meta.company = "YourName";
 
-        // Source folder
+        // =====================
+        // Source
+        // =====================
         project.sources = ["source"];
 
-        // Main class
+        // =====================
+        // Main App
+        // =====================
         project.app.main = "Main";
         project.app.file = "KidAdventure";
         project.app.path = "Export/KidsAdventure";
 
-        // Window config
+        // =====================
+        // Window
+        // =====================
         project.window.width = 800;
         project.window.height = 600;
         project.window.fps = 60;
         project.window.hardware = true;
         project.window.vsync = true;
 
-        // Libraries
+        // =====================
+        // Dependencies
+        // =====================
         project.dependencies = [
             "lime",
             "openfl",
             "flixel",
-            "flixel-addons"
+            "flixel-addons",
+            "extension-androidtools"
         ];
 
-        // Windows only
-        project.target = "windows";
+        // =====================
+        // Android Config
+        // =====================
+        project.android.minSdkVersion = 21;
+        project.android.targetSdkVersion = 34;
+        project.android.compileSdkVersion = 34;
 
+        project.android.permissions = [
+            "INTERNET",
+            "ACCESS_NETWORK_STATE"
+        ];
+
+        // =====================
+        // Build Targets
+        // =====================
+        // Agora suporta Windows e Android
         project.build();
     }
 }
