@@ -2,53 +2,49 @@ name: Build Kid's Adventure (Windows)
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   build-windows:
     runs-on: windows-latest
 
     steps:
-      # 1️⃣ Checkout repository
       - uses: actions/checkout@v3
 
-      # 2️⃣ Install Haxe (installer silencioso)
-      - name: Install Haxe
-        run: |
-          Invoke-WebRequest -Uri https://haxe.org/website-content/downloads/4.3.2/haxe-4.3.2-windows.exe -OutFile haxe-installer.exe
-          Start-Process -FilePath haxe-installer.exe -ArgumentList '/S' -Wait
+      # ✅ Instala Haxe corretamente
+      - name: Setup Haxe
+        uses: krdlab/setup-haxe@v1
+        with:
+          haxe-version: 4.3.2
 
-      # 3️⃣ Install Neko (installer silencioso)
+      # ✅ Instala Neko (necessário pro std.ndll)
       - name: Install Neko
-        run: |
-          Invoke-WebRequest -Uri https://nekovm.org/_downloads/neko-2.3.0-windows.exe -OutFile neko-installer.exe
-          Start-Process -FilePath neko-installer.exe -ArgumentList '/S' -Wait
+        run: choco install neko -y
 
-      # 4️⃣ Add Haxe and Neko to PATH
-      - name: Set PATH
+      # ✅ Verifica versões
+      - name: Check Versions
         run: |
-          $env:PATH += ";C:\HaxeToolkit\haxe;C:\HaxeToolkit\neko"
           haxe -version
           neko -version
 
-      # 5️⃣ Install haxelib dependencies
-      - name: Install haxelib dependencies
+      # ✅ Instala libs
+      - name: Install Haxelib dependencies
         run: |
           haxelib install lime
           haxelib install openfl
           haxelib install flixel
           haxelib install flixel-addons
+          haxelib run lime setup
+          haxelib run openfl setup
           haxelib run flixel setup
 
-      # 6️⃣ Build Windows
+      # ✅ Build Windows
       - name: Build Windows
         run: lime build windows -release
 
-      # 7️⃣ Upload artifact
+      # ✅ Upload artifact
       - uses: actions/upload-artifact@v4
         with:
           name: KidAdventure-Windows
