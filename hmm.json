@@ -2,16 +2,26 @@
   "name": "kids-adventure",
   "url": "https://github.com/Brenninho123/Kid-s-Adventure",
   "license": "Apache-2.0",
-  "tags": ["game", "haxe", "haxeflixel", "platformer"],
-  "description": "Kid's Adventure is a 2D platformer game built with HaxeFlixel.",
+  "tags": [
+    "game",
+    "haxe",
+    "haxeflixel",
+    "platformer",
+    "cross-platform"
+  ],
+  "description": "Kid's Adventure is a cross-platform 2D platformer built with HaxeFlixel.",
   "version": "1.0.0",
   "classPath": "source",
-  "releasenote": "Initial version of Kid's Adventure.",
-  "contributors": ["Brenninho123"],
+  "releasenote": "Initial stable foundation with Windows and Android support.",
+  "contributors": [
+    "Brenninho123"
+  ],
+
   "dependencies": {
-    "lime": "",
-    "openfl": "",
-    "flixel": "",
-    "flixel-addons": ""
+    "lime": "8.1.3",
+    "openfl": "9.3.3",
+    "flixel": "5.6.1",
+    "flixel-addons": "3.3.2",
+    "extension-androidtools": ""
   }
 }
